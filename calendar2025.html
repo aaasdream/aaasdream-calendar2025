@@ -1,0 +1,54 @@
+<style>
+    /* ... 其他樣式保持不變 ... */
+
+    .calendar-container {
+        background-color: white;
+        border: 2px solid #000000;  /* 添加黑色邊框 */
+        border-radius: 0;           /* 移除圓角 */
+        box-shadow: none;           /* 移除陰影 */
+        padding: 25px 30px;
+        width: 1123px;
+        height: 794px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    table {
+        width: 100%;
+        flex: 1;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    th, td {
+        border: 1px solid #000000;  /* 改為黑色邊框 */
+    }
+
+    th {
+        background-color: #4a90e2;
+        color: white;
+        font-weight: normal;
+        height: 35px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        padding: 0;
+        border-bottom: 2px solid #000000;  /* 加粗表頭底部邊框 */
+    }
+
+    /* 列印樣式調整 */
+    @media print {
+        .calendar-container {
+            border: 0.5mm solid #000000 !important;  /* 列印時的邊框 */
+            box-shadow: none !important;
+        }
+
+        table, th, td {
+            border: 0.3mm solid #000000 !important;
+        }
+
+        th {
+            border-bottom: 0.5mm solid #000000 !important;
+        }
+    }
+</style> 

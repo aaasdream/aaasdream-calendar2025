@@ -25,6 +25,7 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            border: 2px solid black;
         }
 
         .calendar-header {
@@ -72,7 +73,7 @@
         }
 
         td {
-            border: 1px solid #e0e0e0;
+            border: 1px solid black;
             padding: 8px 12px;
             position: relative;
             vertical-align: top;
@@ -83,7 +84,7 @@
             top: 8px;
             left: 12px;
             font-size: 28px;
-            font-weight: 300;
+            font-weight: 700;
             z-index: 1;
         }
 
@@ -202,6 +203,8 @@
                 width: 287mm;
                 height: 200mm;
                 padding: 8mm 10mm;
+                border: 0.5mm solid black;
+                box-shadow: none;
             }
 
             .calendar-header {
@@ -225,8 +228,8 @@
             }
 
             td {
-                padding: 0;
-                height: calc((100% - 8mm) / 6);
+                padding: 2mm 3mm;
+                border: 0.25mm solid black;
             }
 
             td span.date {
