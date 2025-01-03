@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年行事曆</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .calendar-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 25px 30px;
+            width: 1123px;
+            height: 794px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            height: 70px;
+        }
+
+        .calendar-header h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 42px;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        table {
+            width: 100%;
+            flex: 1;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: normal;
+            height: 35px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 0;
+        }
+
+        tbody {
+            height: calc(100% - 35px);
+        }
+
+        tbody tr {
+            height: calc(100% / 6);
+        }
+
+        td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 12px;
+            position: relative;
+            vertical-align: top;
+        }
+
+        td span.date {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            font-size: 28px;
+            font-weight: 300;
+            z-index: 1;
+        }
+
+        td .holiday-name {
+            position: absolute;
+            top: 50px;
+            left: 12px;
+            font-size: 12px;
+            color: #e74c3c;
+            width: calc(100% - 24px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .holiday {
+            background-color: #ffebee;
+        }
+
+        .makeup-day {
+            background-color: white;
+        }
+
+        .festival {
+            background-color: #e8f5e9;
+        }
+
+        .holiday span.date {
+            color: #e74c3c;
+        }
+
+        .makeup-day::after {
+            content: none;
+        }
+
+        .today span {
+            background-color: #e3f2fd;
+            font-weight: bold;
+            color: #1976d2;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .other-month span {
+            color: #bdbdbd;
+        }
+
+        .calendar-controls,
+        .month-nav,
+        .current-date {
+            display: none;
+        }
+
+        .arrow-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            color: #666;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .arrow-btn:hover {
+            color: #333;
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .teacher-note {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
+            font-size: 10px;
+            color: #999;
+            text-align: center;
+        }
+
+        .makeup-day-text {
+            position: absolute;
+            top: 50px;
+            left: 12px;
+            font-size: 12px;
+            color: #ff9800;
+        }
+
+        .arrow-btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .arrow-btn:disabled:hover {
+            color: #666;
+            opacity: 0.2;
+            transform: none;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 5mm;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background: none;
+            }
+
+            .calendar-container {
+                width: 287mm;
+                height: 200mm;
+                padding: 8mm 10mm;
+            }
+
+            .calendar-header {
+                margin-bottom: 6mm;
+                height: 15mm;
+            }
+
+            .calendar-header h1 {
+                font-size: 12mm;
+                letter-spacing: 0.5mm;
+            }
+
+            table {
+                height: calc(100% - 21mm);
+            }
+
+            th {
+                height: 8mm;
+                font-size: 3.5mm;
+                padding: 0;
+            }
+
+            td {
+                padding: 0;
+                height: calc((100% - 8mm) / 6);
+            }
+
+            td span.date {
+                top: 2mm;
+                left: 2mm;
+            }
+
+            td .holiday-name {
+                top: 10mm;
+                left: 2mm;
+            }
+
+            .teacher-note {
+                font-size: 2.5mm;
+                bottom: 1.5mm;
+            }
+
+            .holiday {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .makeup-day {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .arrow-btn {
+                display: none;
+            }
+
+            tbody {
+                height: calc(100% - 8mm);
+            }
+
+            tbody tr {
+                height: calc(100% / 6);
+            }
+
+            td {
+                padding: 2mm 3mm;
+            }
+
+            td span.date {
+                top: 2mm;
+                left: 3mm;
+                font-size: 6mm;
+            }
+
+            td .holiday-name {
+                top: 11mm;
+                left: 3mm;
+                font-size: 3mm;
+                width: calc(100% - 6mm);
+            }
+
+            .teacher-note {
+                bottom: 2mm;
+                font-size: 2.5mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button class="arrow-btn" onclick="changeMonth(-1)" id="prevBtn">←</button>
+            <h1 id="current-month">2025年1月</h1>
+            <button class="arrow-btn" onclick="changeMonth(1)" id="nextBtn">→</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>週日</th>
+                    <th>週一</th>
+                    <th>週二</th>
+                    <th>週三</th>
+                    <th>週四</th>
+                    <th>週五</th>
+                    <th>週六</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let currentYear = 2025;
+        let currentMonth = 0;
+
+        function updateArrowButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            // 在 2025 年 1 月時禁用上個月按鈕
+            prevBtn.disabled = currentYear === 2025 && currentMonth === 0;
+            
+            // 在 2025 年 12 月時禁用下個月按鈕
+            nextBtn.disabled = currentYear === 2025 && currentMonth === 11;
+        }
+
+        function changeMonth(delta) {
+            const newMonth = currentMonth + delta;
+            // 只允許在 2025 年內切換月份
+            if (currentYear === 2025 && newMonth >= 0 && newMonth <= 11) {
+                currentMonth = newMonth;
+                generateCalendar();
+                updateArrowButtons();
+            }
+        }
+
+        function generateCalendar() {
+            const holidays = {
+                '2025-01-25': { type: 'holiday', name: '春節連假' },
+                '2025-01-26': { type: 'holiday', name: '春節連假' },
+                '2025-01-27': { type: 'holiday', name: '春節連假' },
+                '2025-01-28': { type: 'holiday', name: '除夕' },
+                '2025-01-29': { type: 'holiday', name: '春節' },
+                '2025-01-30': { type: 'holiday', name: '春節連假' },
+                '2025-01-31': { type: 'holiday', name: '春節連假' },
+                '2025-02-01': { type: 'holiday', name: '春節連假' },
+                '2025-02-02': { type: 'holiday', name: '春節連假' },
+                '2025-02-08': { type: 'makeup', name: '補班日' },
+                '2025-02-28': { type: 'holiday', name: '和平紀念日' },
+                '2025-04-03': { type: 'holiday', name: '清明連假' },
+                '2025-04-04': { type: 'holiday', name: '清明節' },
+                '2025-05-31': { type: 'holiday', name: '端午節' },
+                '2025-10-05': { type: 'holiday', name: '中秋節' },
+                '2025-10-10': { type: 'holiday', name: '國慶日' }
+            };
+
+            const now = new Date();
+            const today = now.getFullYear() === currentYear && 
+                         now.getMonth() === currentMonth ? 
+                         now.getDate() : -1;
+
+            const monthNames = [
+                "1月", "2月", "3月", "4月", "5月", "6月",
+                "7月", "8月", "9月", "10月", "11月", "12月"
+            ];
+            
+            document.getElementById('current-month').textContent = 
+                `${currentYear}年${monthNames[currentMonth]}`;
+
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const startingDay = firstDay.getDay();
+            const totalDays = lastDay.getDate();
+
+            let date = 1;
+            let calendar = '';
+            let lastCellOfMonth = false;
+
+            for (let i = 0; i < 6; i++) {
+                let row = '<tr>';
+                for (let j = 0; j < 7; j++) {
+                    // 檢查是否是本月最後一格
+                    lastCellOfMonth = (date > totalDays && date - totalDays === 1) || 
+                                    (date === totalDays && j === 6);
+
+                    // 檢查是否為週末
+                    const isWeekend = j === 0 || j === 6;
+
+                    if (i === 0 && j < startingDay) {
+                        const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+                        const prevMonthDay = prevMonthLastDay - (startingDay - j - 1);
+                        row += `<td class="other-month ${isWeekend ? 'holiday' : ''}"><span>${prevMonthDay}</span></td>`;
+                    } else if (date > totalDays) {
+                        const nextMonthDay = date - totalDays;
+                        row += `
+                            <td class="other-month ${isWeekend ? 'holiday' : ''}">
+                                <span>${nextMonthDay}</span>
+                                ${lastCellOfMonth ? '<div class="teacher-note">凌老師做玩具</div>' : ''}
+                            </td>`;
+                        date++;
+                    } else {
+                        const currentDate = `2025-${(currentMonth + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+                        const holidayInfo = holidays[currentDate];
+                        const isToday = date === today;
+                        
+                        // 判斷是否為補班日
+                        const isMakeupDay = holidayInfo && holidayInfo.type === 'makeup';
+                        
+                        // 初始化 holidayName 變量
+                        let holidayName = '';
+                        
+                        // 如果是週末但不是補班日，或是假日，就加上 holiday class
+                        let className = isToday ? 'today' : '';
+                        if ((isWeekend && !isMakeupDay) || (holidayInfo && holidayInfo.type === 'holiday')) {
+                            className += ' holiday';
+                        }
+                        
+                        // 處理補班日
+                        if (isMakeupDay) {
+                            className += ' makeup-day';
+                            holidayName = '<div class="makeup-day-text">補班日</div>';
+                        } else if (holidayInfo) {
+                            // 處理其他假日
+                            holidayName = `<div class="holiday-name">${holidayInfo.name}</div>`;
+                        }
+
+                        row += `
+                            <td class="${className}">
+                                <span class="date">${date}</span>
+                                ${holidayName}
+                                ${(date === totalDays && j === 6) ? '<div class="teacher-note">凌老師做玩具</div>' : ''}
+                            </td>`;
+                        date++;
+                    }
+                }
+                row += '</tr>';
+                calendar += row;
+                if (date > totalDays && i !== 0) break;
+            }
+
+            document.getElementById('calendar-body').innerHTML = calendar;
+        }
+
+        window.onload = function() {
+            generateCalendar();
+            updateArrowButtons();
+        };
+    </script>
+</body>
+</html>
